@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>McDonald BBQ · Slow Smoke Soul Food on Main Street, Orange NJ</title>
+<meta name="description" content="McDonald BBQ on Main Street in the City of Orange has been smoking ribs, smothering pork chops and ladling collards for the neighborhood for years. Beef and pork ribs, pulled pork, turkey wings, mac and cheese, candied yams, sweet potato pie. Open late, cash kitchen, takeout ready." />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=tanker@400&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ember:#D6492B;
+    --ember-bright:#F2663F;
+    --green:#1F7A3D;
+    --green-deep:#13502A;
+    --char:#140D0A;
+    --char-soft:#1E1411;
+    --char-card:#241712;
+    --ash:#C9B7AD;
+    --ash-dim:#8C7A70;
+    --cream:#F4E9DF;
+    --gold:#E2A347;
+    --line:rgba(201,183,173,0.16);
+    --line-2:rgba(201,183,173,0.28);
+    --font-display:"Tanker",ui-serif,Georgia,serif;
+    --font-body:"General Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--font-body);
+    background:var(--char);
+    color:var(--cream);
+    line-height:1.65;
+    overflow-x:hidden;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  ::selection{background:var(--ember);color:#fff}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+
+  .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 22px}
+  .display{font-family:var(--font-display);font-weight:400;line-height:0.94;letter-spacing:0.005em;text-transform:uppercase}
+  .eyebrow{font-size:12px;letter-spacing:0.26em;text-transform:uppercase;font-weight:600;color:var(--ember-bright)}
+  .smoke-text{color:var(--ash)}
+
+  /* ===== NAV ===== */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    transition:background .35s ease,border-color .35s ease,padding .35s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.nav.scrolled{
+    background:rgba(16,10,8,0.86);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--font-display);font-size:21px;text-transform:uppercase;letter-spacing:0.02em;line-height:1}
+  .brand .flame{
+    width:34px;height:34px;border-radius:50%;flex:0 0 auto;
+    background:radial-gradient(circle at 50% 65%,var(--gold),var(--ember) 55%,var(--green-deep) 130%);
+    position:relative;box-shadow:0 0 18px rgba(214,73,43,0.5);
+  }
+  .brand .flame::after{content:"";position:absolute;inset:8px;border-radius:50%;background:radial-gradient(circle at 50% 70%,#FFD27A,transparent 70%)}
+  .brand b{font-weight:400}
+  .brand span.sub{display:block;font-family:var(--font-body);font-size:9px;letter-spacing:0.24em;color:var(--ash-dim);margin-top:3px}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a{font-size:14px;font-weight:500;color:var(--ash);letter-spacing:0.01em;position:relative;transition:color .2s}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--ember);transition:width .25s ease}
+  .nav-links a:hover{color:var(--cream)}
+  .nav-links a:hover::after{width:100%}
+  .call-cta{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--ember);color:#fff;font-weight:600;font-size:14px;
+    padding:11px 18px;border-radius:40px;letter-spacing:0.01em;
+    transition:transform .2s ease,background .2s ease;white-space:nowrap;
+  }
+  .call-cta:hover{background:var(--ember-bright);transform:translateY(-1px)}
+  .call-cta svg{width:15px;height:15px;fill:currentColor;flex:0 0 auto}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;padding-bottom:54px}
+  .hero-bg{position:absolute;inset:0;z-index:0}
+  .hero-bg img,.hero-bg video{width:100%;height:100%;object-fit:cover;object-position:center 38%;filter:saturate(1.05) contrast(1.02)}
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(16,10,8,0.62) 0%,rgba(16,10,8,0.2) 32%,rgba(16,10,8,0.55) 66%,var(--char) 99%);
+  }
+  .hero-bg::before{
+    content:"";position:absolute;inset:0;z-index:2;
+    background:linear-gradient(90deg,rgba(16,10,8,0.7) 0%,transparent 55%);
+  }
+  /* smoke drift canvas */
+  #smoke{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.5;mix-blend-mode:screen}
+  .hero-inner{position:relative;z-index:3;width:100%}
+  .hero h1{font-size:clamp(54px,12vw,140px);margin:14px 0 0;color:var(--cream)}
+  .hero h1 em{font-style:normal;color:var(--ember-bright);display:block}
+  .hero-sub{max-width:540px;margin:24px 0 30px;font-size:clamp(16px,2.1vw,19px);color:var(--ash);line-height:1.6}
+  .hero-cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:9px;background:var(--ember);color:#fff;
+    font-weight:600;font-size:15px;padding:15px 26px;border-radius:44px;
+    transition:transform .2s,background .2s;
+  }
+  .btn-primary:hover{background:var(--ember-bright);transform:translateY(-2px)}
+  .btn-ghost{
+    display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line-2);color:var(--cream);
+    font-weight:500;font-size:15px;padding:14px 24px;border-radius:44px;transition:border-color .2s,background .2s;
+  }
+  .btn-ghost:hover{border-color:var(--ash);background:rgba(201,183,173,0.06)}
+  .btn-primary svg,.btn-ghost svg{width:16px;height:16px;fill:currentColor}
+
+  .status-pill{
+    display:inline-flex;align-items:center;gap:9px;
+    background:rgba(31,122,61,0.16);border:1px solid rgba(31,122,61,0.4);
+    color:#7CD79A;font-size:13px;font-weight:600;letter-spacing:0.02em;
+    padding:7px 15px 7px 13px;border-radius:40px;
+  }
+  .status-pill.closed{background:rgba(214,73,43,0.14);border-color:rgba(214,73,43,0.4);color:#F2967F}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:#3FCB6F;box-shadow:0 0 0 0 rgba(63,203,111,0.55);animation:pulse 2.4s infinite}
+  .status-pill.closed .status-dot{background:#F2663F;animation:none;box-shadow:none}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,203,111,0.5)}70%{box-shadow:0 0 0 9px rgba(63,203,111,0)}100%{box-shadow:0 0 0 0 rgba(63,203,111,0)}}
+
+  /* marquee strip */
+  .strip{background:var(--ember);color:#160a06;overflow:hidden;border-top:1px solid rgba(0,0,0,0.15);border-bottom:1px solid rgba(0,0,0,0.15)}
+  .strip-track{display:flex;gap:0;white-space:nowrap;animation:march 34s linear infinite;will-change:transform}
+  .strip-track span{font-family:var(--font-display);font-size:18px;text-transform:uppercase;letter-spacing:0.03em;padding:14px 26px;display:inline-flex;align-items:center;gap:26px}
+  .strip-track span::after{content:"●";font-size:8px;color:#160a06;opacity:.6}
+  @keyframes march{to{transform:translateX(-50%)}}
+
+  /* ===== SECTION SHELL ===== */
+  section{position:relative}
+  .pad{padding:clamp(64px,10vw,118px) 0}
+  .sec-head{max-width:680px;margin-bottom:48px}
+  .sec-head h2{font-family:var(--font-display);font-size:clamp(36px,6vw,68px);text-transform:uppercase;line-height:0.96;margin:14px 0 0;color:var(--cream)}
+  .sec-head p{margin-top:18px;color:var(--ash);font-size:17px;max-width:560px}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+
+  /* ===== STORY ===== */
+  .story{background:var(--char-soft)}
+  .story-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:clamp(36px,6vw,80px);align-items:center}
+  .story-copy p{color:var(--ash);font-size:17px;margin-top:18px;line-height:1.72}
+  .story-copy p strong{color:var(--cream);font-weight:600}
+  .story-stats{display:flex;gap:30px;margin-top:34px;flex-wrap:wrap}
+  .stat b{font-family:var(--font-display);font-size:44px;color:var(--ember-bright);line-height:1;display:block}
+  .stat span{font-size:13px;color:var(--ash-dim);letter-spacing:0.04em;display:block;margin-top:8px}
+  .story-photos{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:14px}
+  .story-photos figure{overflow:hidden;border-radius:14px;position:relative;background:var(--char-card)}
+  .story-photos img{width:100%;height:100%;object-fit:cover;transition:transform .9s ease}
+  .story-photos figure:hover img{transform:scale(1.06)}
+  .story-photos .tall{grid-row:span 2;aspect-ratio:3/4.6}
+  .story-photos .wide{aspect-ratio:4/3.3}
+
+  /* ===== MENU / HEAT METER (signature) ===== */
+  .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:10px}
+  .dish{
+    background:var(--char-card);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    display:flex;flex-direction:column;transition:border-color .3s,transform .3s;
+  }
+  .dish:hover{border-color:var(--line-2);transform:translateY(-3px)}
+  .dish-photo{aspect-ratio:16/10;overflow:hidden;position:relative}
+  .dish-photo img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+  .dish:hover .dish-photo img{transform:scale(1.07)}
+  .dish-photo .tag{
+    position:absolute;top:12px;left:12px;background:rgba(16,10,8,0.78);backdrop-filter:blur(4px);
+    color:var(--cream);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+    padding:6px 11px;border-radius:30px;border:1px solid var(--line-2);
+  }
+  .dish-body{padding:20px 22px 22px;display:flex;flex-direction:column;flex:1}
+  .dish-body h3{font-family:var(--font-display);font-size:25px;text-transform:uppercase;line-height:1;color:var(--cream)}
+  .dish-body p{color:var(--ash);font-size:14.5px;margin-top:10px;line-height:1.6;flex:1}
+  .heat{margin-top:16px}
+  .heat-label{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:7px}
+  .heat-label .lvl{color:var(--gold);font-weight:600}
+  .heat-bar{height:9px;border-radius:30px;background:rgba(201,183,173,0.12);overflow:hidden;position:relative}
+  .heat-fill{
+    height:100%;width:0;border-radius:30px;
+    background:linear-gradient(90deg,var(--gold),var(--ember) 55%,#B5301A);
+    box-shadow:0 0 12px rgba(214,73,43,0.6);
+    transition:width 1.1s cubic-bezier(.2,.8,.2,1);
+  }
+  .heat-bar.lit .heat-fill{position:relative}
+  .heat-bar.lit .heat-fill::after{
+    content:"";position:absolute;top:0;right:0;bottom:0;width:14px;
+    background:radial-gradient(circle,rgba(255,210,122,0.9),transparent 70%);
+    animation:ember 1.4s ease-in-out infinite alternate;
+  }
+  @keyframes ember{from{opacity:.4}to{opacity:1}}
+
+  /* sides ribbon */
+  .sides{margin-top:42px;border-top:1px solid var(--line);padding-top:34px}
+  .sides h3{font-family:var(--font-display);font-size:24px;text-transform:uppercase;color:var(--cream);margin-bottom:18px}
+  .sides-list{display:flex;flex-wrap:wrap;gap:11px}
+  .side-chip{
+    background:rgba(31,122,61,0.1);border:1px solid rgba(31,122,61,0.32);color:#9BE3B4;
+    font-size:14px;font-weight:500;padding:9px 16px;border-radius:40px;transition:background .2s,transform .2s;
+  }
+  .side-chip:hover{background:rgba(31,122,61,0.2);transform:translateY(-2px)}
+  .menu-note{margin-top:30px;font-size:14px;color:var(--ash-dim)}
+  .menu-note b{color:var(--gold);font-weight:600}
+
+  /* ===== PLATE BANNER ===== */
+  .banner{position:relative;min-height:62vh;display:flex;align-items:center;overflow:hidden}
+  .banner-bg{position:absolute;inset:0;z-index:0}
+  .banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center 45%}
+  .banner-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--char) 8%,rgba(20,13,10,0.5) 55%,rgba(20,13,10,0.15) 100%)}
+  .banner-inner{position:relative;z-index:2;max-width:560px}
+  .banner-inner h2{font-family:var(--font-display);font-size:clamp(34px,6vw,62px);text-transform:uppercase;line-height:0.98;color:var(--cream)}
+  .banner-inner p{color:var(--ash);font-size:17px;margin-top:18px}
+
+  /* ===== VISIT / MAP ===== */
+  .visit{background:var(--char-soft)}
+  .visit-grid{display:grid;grid-template-columns:0.92fr 1.08fr;gap:clamp(34px,5vw,64px);align-items:stretch}
+  .hours-card{background:var(--char-card);border:1px solid var(--line);border-radius:20px;padding:clamp(26px,4vw,40px)}
+  .hours-card h3{font-family:var(--font-display);font-size:30px;text-transform:uppercase;color:var(--cream);margin-bottom:6px}
+  .hours-card .addr{color:var(--ash);font-size:15.5px;margin-bottom:24px;line-height:1.6}
+  .hours-list{list-style:none;margin:0 0 8px}
+  .hours-list li{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .hours-list li:last-child{border-bottom:none}
+  .hours-list .day{color:var(--ash);font-weight:500}
+  .hours-list .hrs{color:var(--cream)}
+  .hours-list li.today{position:relative}
+  .hours-list li.today .day{color:var(--gold);font-weight:600}
+  .hours-list li.today .hrs{color:var(--gold)}
+  .hours-list li.today::before{content:"";position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:5px;height:22px;border-radius:4px;background:var(--gold)}
+  .info-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .info-pill{display:inline-flex;align-items:center;gap:9px;font-size:14px;color:var(--ash);border:1px solid var(--line);padding:10px 15px;border-radius:40px}
+  .info-pill svg{width:16px;height:16px;fill:var(--ember-bright);flex:0 0 auto}
+  .info-pill b{color:var(--cream);font-weight:600}
+  .visit-call{display:inline-flex;align-items:center;gap:10px;margin-top:28px;background:var(--ember);color:#fff;font-weight:600;font-size:15px;padding:15px 26px;border-radius:44px;transition:background .2s,transform .2s}
+  .visit-call:hover{background:var(--ember-bright);transform:translateY(-2px)}
+  .visit-call svg{width:17px;height:17px;fill:currentColor}
+
+  .map-frame{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);min-height:380px;height:100%}
+  .map-frame iframe{width:100%;height:100%;min-height:380px;border:0;display:block;filter:none}
+  .map-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(214,73,43,0.06),transparent 30%,rgba(20,13,10,0.32) 100%)}
+
+  /* ===== REVIEW (soft, no stars) ===== */
+  .voice{text-align:center;max-width:820px;margin:0 auto}
+  .voice .mark{font-family:var(--font-display);font-size:80px;color:var(--ember);line-height:0.4;opacity:.55}
+  .voice blockquote{font-family:var(--font-display);font-size:clamp(26px,4.4vw,46px);text-transform:uppercase;line-height:1.06;color:var(--cream);margin:18px 0 22px}
+  .voice cite{font-style:normal;font-size:14px;letter-spacing:0.06em;color:var(--ash-dim)}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--char);border-top:1px solid var(--line);padding:clamp(54px,8vw,84px) 0 30px}
+  .foot-top{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px}
+  .foot-brand .brand{font-size:26px;margin-bottom:14px}
+  .foot-brand p{color:var(--ash);font-size:14.5px;max-width:330px;line-height:1.65}
+  .foot-col h4{font-family:var(--font-display);font-size:16px;text-transform:uppercase;letter-spacing:0.04em;color:var(--gold);margin-bottom:16px}
+  .foot-col a,.foot-col p{display:block;color:var(--ash);font-size:14.5px;margin-bottom:10px;transition:color .2s}
+  .foot-col a:hover{color:var(--cream)}
+  .foot-cta{display:inline-flex;align-items:center;gap:9px;background:var(--ember);color:#fff;font-weight:600;font-size:14px;padding:12px 20px;border-radius:40px;margin-top:6px;transition:background .2s}
+  .foot-cta:hover{background:var(--ember-bright)}
+  .foot-cta svg{width:15px;height:15px;fill:currentColor}
+  .foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-top:54px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:var(--ash-dim)}
+  .bysemaj{display:inline-flex;align-items:center;gap:8px;color:var(--ash-dim);transition:color .25s}
+  .bysemaj:hover{color:var(--ember-bright)}
+  .bysemaj .spark{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 8px var(--ember)}
+  .bysemaj b{color:var(--ash);font-weight:600}
+
+  /* ===== MOBILE CALL FAB ===== */
+  .fab{
+    position:fixed;right:16px;bottom:16px;z-index:70;display:none;
+    width:54px;height:54px;border-radius:50%;background:var(--ember);
+    align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.45),0 0 0 4px rgba(214,73,43,0.2);
+  }
+  .fab svg{width:22px;height:22px;fill:#fff}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:920px){
+    .story-grid{grid-template-columns:1fr;gap:40px}
+    .visit-grid{grid-template-columns:1fr}
+    .foot-top{grid-template-columns:1fr 1fr}
+    .foot-brand{grid-column:1/-1}
+  }
+  @media (max-width:760px){
+    .nav-links{display:none}
+    .call-cta{width:46px;height:46px;border-radius:50%;justify-content:center;padding:0}
+    .call-cta .label{display:none}
+    .call-cta svg{width:19px;height:19px}
+    .menu-grid{grid-template-columns:1fr}
+    .fab{display:flex}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 18px}
+    .story-photos{grid-template-columns:1fr 1fr}
+    .foot-top{grid-template-columns:1fr}
+    .hours-card{padding:24px 20px}
+    .story-stats{gap:22px}
+    .stat b{font-size:36px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="McDonald BBQ home">
+      <span class="flame" aria-hidden="true"></span>
+      <span>McDonald <b>BBQ</b><span class="sub">SLOW SMOKE · ORANGE NJ</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#story">The Pit</a>
+      <a href="#menu">The Plate</a>
+      <a href="#visit">Find Us</a>
+      <a href="#hours">Hours</a>
+    </nav>
+    <a class="call-cta" href="tel:+19732669528" aria-label="Call McDonald BBQ at (973) 266-9528">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+      <span class="label">(973) 266-9528</span>
+    </a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<a id="top"></a>
+<section class="hero">
+  <div class="hero-bg">
+    <video autoplay muted loop playsinline preload="metadata"
+      poster="https://images.pexels.com/videos/8522967/4th-of-july-adult-backyard-barbecue-8522967.jpeg?auto=compress&w=1900"
+      aria-label="A neighborhood pitmaster grilling fresh meat on the backyard grill">
+      <source src="https://videos.pexels.com/video-files/8522967/8522967-hd_1920_1080_30fps.mp4" type="video/mp4" />
+      <img src="https://images.pexels.com/videos/8522967/4th-of-july-adult-backyard-barbecue-8522967.jpeg?auto=compress&w=1900" alt="A neighborhood pitmaster grilling fresh meat on the backyard grill" />
+    </video>
+  </div>
+  <canvas id="smoke" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <span id="heroStatus"></span>
+    <h1 class="display">Smoke that<br/><em>knows your name</em></h1>
+    <p class="hero-sub">For years the pit at 5 Main Street has been the reason a line forms on a Friday night. Beef and pork ribs, pulled pork, turkey wings, and sides that taste like Sunday. This is the corner of Orange that smells like dinner is already on.</p>
+    <div class="hero-cta-row">
+      <a class="btn-primary" href="tel:+19732669528">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+        Call in your order
+      </a>
+      <a class="btn-ghost" href="#menu">
+        See the plate
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16l-6-6h12z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARQUEE STRIP ===== -->
+<div class="strip" aria-hidden="true">
+  <div class="strip-track" id="strip">
+    <span>BEEF &amp; PORK RIBS</span><span>PULLED PORK</span><span>SMOTHERED CHOPS</span><span>TURKEY WINGS</span><span>FRIED CHICKEN</span><span>COLLARD GREENS</span><span>CANDIED YAMS</span><span>MAC &amp; CHEESE</span><span>SWEET POTATO PIE</span>
+  </div>
+</div>
+
+<!-- ===== STORY / THE PIT ===== -->
+<section class="story" id="story">
+  <div class="wrap pad">
+    <div class="story-grid">
+      <div class="story-copy rv">
+        <span class="eyebrow">The Pit on Main</span>
+        <h2 class="display" style="font-size:clamp(34px,6vw,62px);margin-top:14px">Low heat.<br/>Long hours.<br/>No shortcuts.</h2>
+        <p>McDonald BBQ has held down the bottom of Main Street long enough that folks plan their week around it. The ribs go on low and slow, the greens simmer down with smoke and time, and the chops get smothered the way somebody's grandmother taught somebody's grandmother.</p>
+        <p>It is a <strong>cash kitchen and a takeout window</strong>, plain and honest. You order, you wait the good kind of wait, and you carry home a foil tray that feeds the whole table. In a neighborhood of Orange that runs on Caribbean, Southern, and island roots, this is the smell everybody recognizes.</p>
+        <div class="story-stats">
+          <div class="stat"><b>Open Late</b><span>11 PM, Monday to Saturday</span></div>
+          <div class="stat"><b>Cash</b><span>Honest takeout window</span></div>
+          <div class="stat"><b>Hundreds</b><span>of neighbors served</span></div>
+        </div>
+      </div>
+      <div class="story-photos rv">
+        <figure class="tall">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80" alt="Pitmaster basting ribs over open flame on the grill" />
+        </figure>
+        <figure class="wide">
+          <img src="https://images.unsplash.com/photo-1432139509613-5c4255815697?auto=format&fit=crop&w=700&q=80" alt="Bowl of slow-cooked collard greens, a soul food side" />
+        </figure>
+        <figure class="wide">
+          <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80" alt="Golden baked macaroni and cheese fresh from the oven" />
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MENU / HEAT METER ===== -->
+<section class="menu pad" id="menu">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">The Plate</span>
+      <h2>Off the smoker<br/>and onto your tray</h2>
+      <p>Slide your eye down the heat meter. Mild is the family plate, scotch bonnet is for the brave. Every dish here is a real dinner, sides included, made to carry home.</p>
+    </div>
+
+    <div class="menu-grid">
+
+      <article class="dish rv">
+        <div class="dish-photo">
+          <span class="tag">Pit Favorite</span>
+          <img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80" alt="Slow-smoked rib meat sliced and glistening on the board" />
+        </div>
+        <div class="dish-body">
+          <h3>Beef &amp; Pork Ribs</h3>
+          <p>Smoked low until the meat gives at the bone, then brushed with the house hot sauce. The one that started the line.</p>
+          <div class="heat">
+            <div class="heat-label"><span>Heat</span><span class="lvl">Medium</span></div>
+            <div class="heat-bar" data-heat="58"><div class="heat-fill"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish rv">
+        <div class="dish-photo">
+          <span class="tag">House Plate</span>
+          <img src="https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?auto=format&fit=crop&w=800&q=80" alt="Chopped barbecue meat piled with roasted potatoes" />
+        </div>
+        <div class="dish-body">
+          <h3>Pulled &amp; Chopped Pork</h3>
+          <p>Hours in the smoke, pulled by hand and chopped to order. Dressed mild or dragged through the hot sauce, your call.</p>
+          <div class="heat">
+            <div class="heat-label"><span>Heat</span><span class="lvl">Mild</span></div>
+            <div class="heat-bar" data-heat="32"><div class="heat-fill"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish rv">
+        <div class="dish-photo">
+          <span class="tag">Soul Plate</span>
+          <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=800&q=80" alt="A thick seared pork chop plated with greens" />
+        </div>
+        <div class="dish-body">
+          <h3>Smothered Chops</h3>
+          <p>Pork chops cooked down in their own gravy until they are fork soft. Grandmother heat, the kind that warms slow.</p>
+          <div class="heat">
+            <div class="heat-label"><span>Heat</span><span class="lvl">Easy</span></div>
+            <div class="heat-bar" data-heat="22"><div class="heat-fill"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish rv">
+        <div class="dish-photo">
+          <span class="tag">Big Appetite</span>
+          <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=800&q=80" alt="Big saucy bone-in wings with a side of dipping sauce" />
+        </div>
+        <div class="dish-body">
+          <h3>Turkey Wing Dinner</h3>
+          <p>Big, spiced turkey wings cooked slow and attentive. A full plate that eats like a holiday on a Tuesday.</p>
+          <div class="heat">
+            <div class="heat-label"><span>Heat</span><span class="lvl">Medium</span></div>
+            <div class="heat-bar" data-heat="50"><div class="heat-fill"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish rv">
+        <div class="dish-photo">
+          <span class="tag">Crowd Pull</span>
+          <img src="https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=800&q=80" alt="Golden crispy fried chicken pieces served on a banana leaf" />
+        </div>
+        <div class="dish-body">
+          <h3>Fried Chicken</h3>
+          <p>Crackle on the outside, juicy through the middle. Order it for the table and watch it disappear first.</p>
+          <div class="heat">
+            <div class="heat-label"><span>Heat</span><span class="lvl">Mild</span></div>
+            <div class="heat-bar" data-heat="30"><div class="heat-fill"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish rv">
+        <div class="dish-photo">
+          <span class="tag">For the Brave</span>
+          <img src="https://images.unsplash.com/photo-1526346698789-22fd84314424?auto=format&fit=crop&w=800&q=80" alt="A pile of bright red hot chili peppers, the heat of the kitchen" />
+        </div>
+        <div class="dish-body">
+          <h3>Drag It Through Hot</h3>
+          <p>Any plate, taken to the top of the meter. The house hot sauce with a scotch bonnet kiss. Ask, and they will bring the heat.</p>
+          <div class="heat">
+            <div class="heat-label"><span>Heat</span><span class="lvl">Scotch Bonnet</span></div>
+            <div class="heat-bar" data-heat="100"><div class="heat-fill"></div></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="sides rv">
+      <h3>The sides that finish the tray</h3>
+      <div class="sides-list">
+        <span class="side-chip">Collard Greens</span>
+        <span class="side-chip">Mac &amp; Cheese</span>
+        <span class="side-chip">Candied Yams</span>
+        <span class="side-chip">Mashed Potatoes</span>
+        <span class="side-chip">Black-Eye Peas</span>
+        <span class="side-chip">Cornbread</span>
+        <span class="side-chip">Sweet Potato Pie</span>
+      </div>
+      <p class="menu-note"><b>Good to know.</b> McDonald BBQ is a cash kitchen and takeout window. Call ahead and your tray is ready when you walk up.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLATE BANNER ===== -->
+<section class="banner">
+  <div class="banner-bg">
+    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1700&q=80" alt="A loaded soul food plate of meat and sides ready to eat" />
+  </div>
+  <div class="wrap">
+    <div class="banner-inner rv">
+      <span class="eyebrow">Carry It Home</span>
+      <h2>One tray feeds<br/>the whole table</h2>
+      <p>Order the meat, pick three sides, grab a slice of sweet potato pie on the way out. Call it in and skip the wait.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VOICE (soft, no stars) ===== -->
+<section class="pad" style="background:var(--char-soft)">
+  <div class="wrap voice rv">
+    <div class="mark" aria-hidden="true">&ldquo;</div>
+    <blockquote>The kind of place the whole block already knows. You smell it before you see it.</blockquote>
+    <cite>From the neighbors on Main Street</cite>
+  </div>
+</section>
+
+<!-- ===== VISIT / HOURS / MAP ===== -->
+<section class="visit pad" id="visit">
+  <div class="wrap">
+    <div class="sec-head rv" id="hours">
+      <span class="eyebrow">Find Us</span>
+      <h2>Bottom of Main,<br/>top of the night</h2>
+    </div>
+    <div class="visit-grid">
+      <div class="hours-card rv">
+        <h3>Hours &amp; Address</h3>
+        <p class="addr">5 Main Street<br/>City of Orange, NJ 07050</p>
+        <ul class="hours-list" id="hoursList">
+          <li data-day="1"><span class="day">Monday</span><span class="hrs">11 AM to 11 PM</span></li>
+          <li data-day="2"><span class="day">Tuesday</span><span class="hrs">11 AM to 11 PM</span></li>
+          <li data-day="3"><span class="day">Wednesday</span><span class="hrs">11 AM to 11 PM</span></li>
+          <li data-day="4"><span class="day">Thursday</span><span class="hrs">11 AM to 11 PM</span></li>
+          <li data-day="5"><span class="day">Friday</span><span class="hrs">11 AM to 11 PM</span></li>
+          <li data-day="6"><span class="day">Saturday</span><span class="hrs">11 AM to 11 PM</span></li>
+          <li data-day="0"><span class="day">Sunday</span><span class="hrs">11 AM to 6 PM</span></li>
+        </ul>
+        <div class="info-row">
+          <span class="info-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v2H3zm0 4h18v2H3zm0 4h12v2H3z"/></svg> Takeout &amp; <b>cash kitchen</b></span>
+          <span class="info-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg> Lower <b>Main Street</b></span>
+        </div>
+        <a class="visit-call" href="tel:+19732669528">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+          Call (973) 266-9528
+        </a>
+      </div>
+      <div class="map-frame rv">
+        <iframe
+          title="McDonald BBQ location, 5 Main Street, City of Orange, NJ 07050"
+          src="https://www.google.com/maps?q=5+Main+St,+City+of+Orange,+NJ+07050&z=16&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <span class="brand"><span class="flame" aria-hidden="true"></span><span>McDonald <b>BBQ</b></span></span>
+        <p>Slow-smoked ribs, smothered chops and Sunday sides at the bottom of Main Street in the City of Orange. Cash kitchen, takeout window, open late.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Visit</h4>
+        <p>5 Main Street</p>
+        <p>City of Orange, NJ 07050</p>
+        <a href="https://www.google.com/maps?q=5+Main+St,+City+of+Orange,+NJ+07050" target="_blank" rel="noopener">Get directions</a>
+      </div>
+      <div class="foot-col">
+        <h4>Hours</h4>
+        <p>Mon to Sat · 11 AM to 11 PM</p>
+        <p>Sunday · 11 AM to 6 PM</p>
+        <a class="foot-cta" href="tel:+19732669528">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+          (973) 266-9528
+        </a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span id="year"></span> McDonald BBQ · 5 Main Street, City of Orange, NJ</span>
+      <a class="bysemaj" href="https://bysemaj.com" target="_blank" rel="noopener">
+        <span class="spark" aria-hidden="true"></span>
+        Built by <b>bysemaj.com</b>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== MOBILE CALL FAB ===== -->
+<a class="fab" href="tel:+19732669528" aria-label="Call McDonald BBQ at (973) 266-9528">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* year */
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* nav scrolled state */
+  var nav = document.getElementById('nav');
+  function onScroll(){ if(window.scrollY > 40){ nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); } }
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* ===== Open now / Closed (America/New_York) ===== */
+  // schedule: 0=Sun..6=Sat -> [openMin, closeMin]
+  var SCHED = {0:[660,1080],1:[660,1380],2:[660,1380],3:[660,1380],4:[660,1380],5:[660,1380],6:[660,1380]};
+  function nyParts(){
+    try{
+      var fmt = new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false});
+      var p = {}; fmt.formatToParts(new Date()).forEach(function(o){p[o.type]=o.value;});
+      var map={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+      var h=parseInt(p.hour,10); if(h===24)h=0;
+      return {day:map[p.weekday], min:h*60+parseInt(p.minute,10)};
+    }catch(e){
+      var d=new Date(); return {day:d.getDay(), min:d.getHours()*60+d.getMinutes()};
+    }
+  }
+  function fmt12(min){
+    var h=Math.floor(min/60), m=min%60; var ap=h>=12?'PM':'AM'; var hh=h%12; if(hh===0)hh=12;
+    return hh+(m?(':'+(m<10?'0':'')+m):'')+' '+ap;
+  }
+  function computeStatus(){
+    var now=nyParts(); var s=SCHED[now.day];
+    var open = s && now.min>=s[0] && now.min<s[1];
+    var label, sub;
+    if(open){
+      label='Open now'; sub='Kitchen on until '+fmt12(s[1]);
+    } else {
+      // find next opening
+      label='Closed';
+      var todayOpen = s && now.min < s[0];
+      if(todayOpen){ sub='Opens today at '+fmt12(s[0]); }
+      else {
+        for(var i=1;i<=7;i++){ var nd=(now.day+i)%7; if(SCHED[nd]){ sub='Opens '+(i===1?'tomorrow':['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][nd])+' at '+fmt12(SCHED[nd][0]); break; } }
+      }
+    }
+    return {open:open,label:label,sub:sub,day:now.day};
+  }
+  var st = computeStatus();
+  var heroStatus = document.getElementById('heroStatus');
+  if(heroStatus){
+    heroStatus.innerHTML = '<span class="status-pill'+(st.open?'':' closed')+'"><span class="status-dot"></span>'+st.label+' · '+st.sub+'</span>';
+  }
+  /* highlight today's hours row */
+  var todayRow = document.querySelector('#hoursList li[data-day="'+st.day+'"]');
+  if(todayRow){ todayRow.classList.add('today'); }
+
+  /* ===== reveal on scroll ===== */
+  var rvs = document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.14, rootMargin:'0px 0px -8% 0px'});
+    rvs.forEach(function(el){ io.observe(el); });
+  } else { rvs.forEach(function(el){ el.classList.add('in'); }); }
+
+  /* ===== heat meters fill when in view ===== */
+  var bars = document.querySelectorAll('.heat-bar');
+  if('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          var bar=e.target, pct=parseInt(bar.getAttribute('data-heat'),10)||0;
+          var fill=bar.querySelector('.heat-fill');
+          setTimeout(function(){ fill.style.width=pct+'%'; if(pct>=70){ bar.classList.add('lit'); } }, 120);
+          io2.unobserve(bar);
+        }
+      });
+    },{threshold:0.4});
+    bars.forEach(function(b){ io2.observe(b); });
+  } else {
+    bars.forEach(function(b){ var p=parseInt(b.getAttribute('data-heat'),10)||0; b.querySelector('.heat-fill').style.width=p+'%'; if(p>=70)b.classList.add('lit'); });
+  }
+
+  /* duplicate marquee for seamless loop */
+  var strip=document.getElementById('strip');
+  if(strip){ strip.innerHTML += strip.innerHTML; }
+
+  /* ===== Hero smoke drift (signature) ===== */
+  var canvas=document.getElementById('smoke');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(canvas && !reduce){
+    var ctx=canvas.getContext('2d'); var W,H,dpr,puffs=[],raf;
+    function size(){
+      dpr=Math.min(window.devicePixelRatio||1,2);
+      W=canvas.clientWidth; H=canvas.clientHeight;
+      canvas.width=W*dpr; canvas.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    function mk(){
+      return { x:Math.random()*W, y:H+Math.random()*120, r:60+Math.random()*120,
+               vy:0.25+Math.random()*0.5, vx:(Math.random()-0.5)*0.3,
+               a:0.04+Math.random()*0.08, life:0, max:520+Math.random()*340 };
+    }
+    function init(){ size(); puffs=[]; var n=Math.round(W/120)+6; for(var i=0;i<n;i++){ var p=mk(); p.y=Math.random()*H; p.life=Math.random()*p.max; puffs.push(p); } }
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      for(var i=0;i<puffs.length;i++){
+        var p=puffs[i]; p.y-=p.vy; p.x+=p.vx; p.life++;
+        var t=p.life/p.max; var alpha=p.a*(1-Math.abs(t-0.4)*1.4); if(alpha<0)alpha=0;
+        var g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+        g.addColorStop(0,'rgba(214,170,150,'+alpha+')');
+        g.addColorStop(1,'rgba(214,170,150,0)');
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+        if(p.y< -p.r || p.life>p.max){ puffs[i]=mk(); }
+      }
+      raf=requestAnimationFrame(frame);
+    }
+    init(); frame();
+    var rt; window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(init,200); });
+    document.addEventListener('visibilitychange',function(){ if(document.hidden){ cancelAnimationFrame(raf); } else { frame(); } });
+  }
+
+})();
+</script>
+</body>
+</html>
