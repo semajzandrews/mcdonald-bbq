@@ -272,6 +272,54 @@
     align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.45),0 0 0 4px rgba(214,73,43,0.2);
   }
   .fab svg{width:22px;height:22px;fill:#fff}
+  .fab-stack{position:fixed;right:16px;bottom:16px;z-index:70;display:none;flex-direction:column;gap:10px}
+  .fab-stack .fab{position:static;display:flex}
+  .fab-stack .fab.text{background:var(--green);box-shadow:0 8px 24px rgba(0,0,0,0.45),0 0 0 4px rgba(31,122,61,0.22)}
+
+  /* ===== CALL OR TEXT (phone doctrine) =====
+     Root class is .cot, deliberately not .wrap: .wrap is the 1180px page
+     container above and the popover would inherit it and sit off-screen.
+     Treatment: the order ticket. Cream paper on a dark site, near-square
+     corners, a green kitchen stripe down each row. */
+  .cot{position:relative;display:inline-flex}
+  .cot-trigger{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--ember);color:#fff;font-weight:600;font-size:14px;
+    padding:11px 18px;border-radius:40px;letter-spacing:0.01em;border:0;cursor:pointer;
+    font-family:var(--font-body);line-height:1.2;
+    transition:transform .2s ease,background .2s ease;white-space:nowrap;
+  }
+  .cot-trigger:hover{background:var(--ember-bright);transform:translateY(-1px)}
+  .cot-trigger svg{width:15px;height:15px;fill:currentColor;flex:0 0 auto}
+  .cot-menu{
+    position:absolute;top:calc(100% + 12px);right:0;z-index:90;
+    width:max-content;min-width:262px;
+    background:var(--cream);border-radius:3px;padding:6px;
+    border-top:4px solid var(--green);
+    box-shadow:0 20px 44px rgba(0,0,0,0.5);
+    display:grid;gap:4px;
+    opacity:0;transform:translateY(-6px);pointer-events:none;
+    transition:opacity .22s ease,transform .22s ease;
+  }
+  .cot-menu[data-open="true"]{opacity:1;transform:none;pointer-events:auto}
+  .cot-menu a{
+    display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;
+    padding:11px 13px;color:var(--char);border-left:3px solid transparent;
+    transition:background .2s ease,border-color .2s ease;
+  }
+  .cot-menu a:hover{background:rgba(31,122,61,0.09);border-left-color:var(--green)}
+  .cot-menu a svg{width:18px;height:18px;fill:var(--ember);flex:0 0 auto}
+  .cot-menu strong{
+    display:block;font-family:var(--font-display);font-weight:400;
+    text-transform:uppercase;letter-spacing:0.04em;font-size:16px;line-height:1.1;
+  }
+  .cot-menu em{display:block;font-style:normal;font-size:12.5px;color:#6B5B53;margin-top:2px}
+  .cot-pair{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  @media (max-width:760px){
+    .cot-trigger{width:46px;height:46px;border-radius:50%;justify-content:center;padding:0}
+    .cot-trigger .label{display:none}
+    .cot-trigger svg{width:19px;height:19px}
+  }
 
   /* ===== RESPONSIVE ===== */
   @media (max-width:920px){
@@ -286,7 +334,7 @@
     .call-cta .label{display:none}
     .call-cta svg{width:19px;height:19px}
     .menu-grid{grid-template-columns:1fr}
-    .fab{display:flex}
+    .fab-stack{display:flex}
   }
   @media (max-width:560px){
     .wrap{padding:0 18px}
@@ -318,10 +366,23 @@
       <a href="#visit">Find Us</a>
       <a href="#hours">Hours</a>
     </nav>
-    <a class="call-cta" href="tel:+19732669528" aria-label="Call McDonald BBQ at (973) 266-9528">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
-      <span class="label">(973) 266-9528</span>
-    </a>
+    <!-- phone doctrine: one number, (973) 266-9528 / +19732669528, call or text -->
+    <div class="cot" data-cot>
+      <button type="button" class="cot-trigger" data-cot-trigger aria-expanded="false" aria-haspopup="menu" aria-label="Call or text McDonald BBQ at (973) 266-9528">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+        <span class="label">(973) 266-9528</span>
+      </button>
+      <div class="cot-menu" data-cot-menu data-open="false" role="menu">
+        <a href="tel:+19732669528" role="menuitem">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+          <span><strong>Call the kitchen</strong><em>We pick up while the pit runs</em></span>
+        </a>
+        <a href="sms:+19732669528?&amp;body=Hi%20McDonald%20BBQ,%20I'd%20like%20to%20text%20in%20a%20takeout%20order.%20Here's%20what%20I%20want:%20" role="menuitem">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
+          <span><strong>Text your order</strong><em>Trays and catering too</em></span>
+        </a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -345,6 +406,10 @@
       <a class="btn-primary" href="tel:+19732669528">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
         Call in your order
+      </a>
+      <a class="btn-ghost" href="sms:+19732669528?&amp;body=Hi%20McDonald%20BBQ!%20Putting%20in%20a%20rib%20order%20for%20tonight.%20What%20time%20should%20I%20come%20by?">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
+        Text it instead
       </a>
       <a class="btn-ghost" href="#menu">
         See the plate
@@ -557,10 +622,16 @@
           <span class="info-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v2H3zm0 4h18v2H3zm0 4h12v2H3z"/></svg> Takeout &amp; <b>cash kitchen</b></span>
           <span class="info-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg> Lower <b>Main Street</b></span>
         </div>
-        <a class="visit-call" href="tel:+19732669528">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
-          Call (973) 266-9528
-        </a>
+        <div class="cot-pair">
+          <a class="visit-call" href="tel:+19732669528">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+            Call (973) 266-9528
+          </a>
+          <a class="btn-ghost" style="margin-top:28px" href="sms:+19732669528?&amp;body=Hi%20McDonald%20BBQ,%20I%20need%20a%20catering%20tray%20for%20a%20family%20gathering.%20What%20sizes%20do%20you%20do?">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
+            Text about catering
+          </a>
+        </div>
       </div>
       <div class="map-frame rv">
         <iframe
@@ -595,6 +666,10 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
           (973) 266-9528
         </a>
+        <a class="foot-cta" style="background:var(--green)" href="sms:+19732669528?&amp;body=Hi%20McDonald%20BBQ,%20how%20late%20are%20you%20serving%20tonight?%20I'd%20like%20to%20put%20in%20an%20order.">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
+          Text us
+        </a>
       </div>
     </div>
     <div class="foot-bottom">
@@ -608,9 +683,14 @@
 </footer>
 
 <!-- ===== MOBILE CALL FAB ===== -->
-<a class="fab" href="tel:+19732669528" aria-label="Call McDonald BBQ at (973) 266-9528">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
-</a>
+<div class="fab-stack">
+  <a class="fab text" href="sms:+19732669528?&amp;body=Hi%20McDonald%20BBQ,%20I'd%20like%20to%20text%20in%20a%20takeout%20order.%20Here's%20what%20I%20want:%20" aria-label="Text McDonald BBQ at (973) 266-9528">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
+  </a>
+  <a class="fab" href="tel:+19732669528" aria-label="Call McDonald BBQ at (973) 266-9528">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1z"/></svg>
+  </a>
+</div>
 
 <script>
 (function(){
@@ -734,6 +814,25 @@
   }
 
 })();
+</script>
+
+<script>
+/* call-or-text chooser: outside click and Escape both close */
+document.querySelectorAll('[data-cot]').forEach(function(root){
+  var trigger = root.querySelector('[data-cot-trigger]');
+  var menu = root.querySelector('[data-cot-menu]');
+  function set(open){
+    menu.dataset.open = String(open);
+    trigger.setAttribute('aria-expanded', String(open));
+  }
+  trigger.addEventListener('click', function(e){
+    e.stopPropagation();
+    set(menu.dataset.open !== 'true');
+  });
+  menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ set(false); }); });
+  document.addEventListener('mousedown', function(e){ if(!root.contains(e.target)) set(false); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') set(false); });
+});
 </script>
 </body>
 </html>
